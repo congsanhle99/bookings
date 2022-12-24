@@ -11,6 +11,12 @@
       integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker-bs4.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
     <link rel="stylesheet" href="static/css/style.css" />
   </head>
   <body>
@@ -76,43 +82,31 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
           <h1 class="mt-5">Search for Availability</h1>
-          <form action="reservation.html" method="get">
+          <form action="reservation.html" method="get" novalidate class="needs-validation">
             <div class="form-row">
               <div class="col">
-                <div class="form-group">
-                  <label for="start-date">Start Date</label>
-                  <input
-                    required
-                    type="date"
-                    class="form-control"
-                    id="start-date"
-                    name="start-date"
-                    aria-describedby="startDateHelp"
-                  />
-                  <small id="startDateHelp" class="form-text text-muted">Enter Starting Date</small>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="end-date">End Date</label>
-                  <input
-                    required
-                    type="date"
-                    class="form-control"
-                    id="end-date"
-                    name="end-date"
-                    aria-describedby="endDateHelp"
-                  />
-                  <small id="endDateHelp" class="form-text text-muted">Enter Ending Date</small>
+                <div class="form-row" id="reservation-dates">
+                  <div class="col">
+                    <input required class="form-control" type="text" name="start" placeholder="Arrival" />
+                  </div>
+                  <div class="col">
+                    <input required class="form-control" type="text" name="end" placeholder="Departure" />
+                  </div>
                 </div>
               </div>
             </div>
+            <hr />
             <button type="submit" class="btn btn-primary">Search Availability</button>
           </form>
         </div>
       </div>
     </div>
     <!-- end container -->
+
+    <!-- btn test -->
+    <h1 id="myPara">This h1 element</h1>
+    <button id="colorButton" onclick>Click me</button>
+    <!-- end btn test -->
 
     <!-- footer -->
     <div class="row my-footer">
@@ -137,5 +131,55 @@
       integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
+    <script>
+      // test btn
+      document.getElementById("colorButton").addEventListener("click", () => {
+        notify("success", "success");
+      })(
+        // end test btn
+
+        function () {
+          "use strict";
+          window.addEventListener(
+            "load",
+            function () {
+              // Fetch all the forms we want to apply custom Bootstrap validation styles to
+              let forms = document.getElementsByClassName("needs-validation");
+              // Loop over them and prevent submission
+              Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener(
+                  "submit",
+                  function (event) {
+                    if (form.checkValidity() === false) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                  },
+                  false
+                );
+              });
+            },
+            false
+          );
+        }
+      )();
+
+      const elem = document.getElementById("reservation-dates");
+      const rangepicker = new DateRangePicker(elem, {
+        format: "yyyy-mm-dd",
+      });
+
+      // notie
+      function notify(msg, msgType) {
+        notie.alert({
+          type: msgType,
+          text: msg,
+        });
+      }
+      // end notie
+    </script>
   </body>
 </html>
