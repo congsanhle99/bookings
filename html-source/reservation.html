@@ -138,13 +138,27 @@
       let attention = Prompt();
       // test btn
       document.getElementById("colorButton").addEventListener("click", () => {
-        // notify("success", "success");
-        // notifyModal("hi", "<em>dijashdjkashdjhas</em>", "success", "thong tin gi day");
-        attention.error({ msg: "jijijijiji" });
-      })(
+        let html = `
+          <form action="" id="check-availability-form" method="post" novalidate class="needs-validation">
+        <div class="form-row">
+          <div class="col">
+            <div class="form-row" id="reservation-dates-modal">
+              <div class="col">
+                <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival" />
+              </div>
+              <div class="col">
+                <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure" />
+              </div>
+            </div>
+          </div>
+        </div> 
+      </form>
+          `;
+        attention.custom({ msg: html, title: "choose date" });
+      })
         // end test btn
 
-        function () {
+        (function () {
           "use strict";
           window.addEventListener(
             "load",
@@ -168,8 +182,7 @@
             },
             false
           );
-        }
-      )();
+        })();
 
       const elem = document.getElementById("reservation-dates");
       const rangepicker = new DateRangePicker(elem, {
@@ -240,10 +253,41 @@
           });
         };
 
+        async function custom(c) {
+          const { msg = "", title = "" } = c;
+
+          const { value: formValues } = await Swal.fire({
+            title: title,
+            html: msg,
+            backdrop: false,
+            focusConfirm: false,
+            showCancelButton: true,
+            willOpen: () => {
+              const elem = document.getElementById("reservation-dates-modal");
+              const rp = new DateRangePicker(elem, {
+                format: "yyyy-mm-dd",
+                showOnFocus: true,
+              });
+            },
+            preConfirm: () => {
+              return [document.getElementById("start").value, document.getElementById("end").value];
+            },
+            didOpen: () => {
+              document.getElementById("start").removeAttribute("disabled");
+              document.getElementById("end").removeAttribute("disabled");
+            },
+          });
+
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues));
+          }
+        }
+
         return {
           toast: toast,
           success: success,
           error: error,
+          custom: custom,
         };
       }
       // end Prompt

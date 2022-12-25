@@ -22,8 +22,9 @@
   box-shadow: none;
 }
 
-.datepicker {
+.datepicker.active{
   z-index: 999;
+  display: contents;
 }
 
 .redText {
